@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-//import node from "./Nodes.js";
+import Node from "./NodePlace.js";
 
 class Grid extends Component {
   render() {
@@ -8,7 +8,7 @@ class Grid extends Component {
     const nodesGrid = nodes.map(node => {
       return (
         <div>
-          <p key={node.id}>I am node {node.id}</p>
+          <Node id={this.props.nodes.id} />
         </div>
       );
     });
