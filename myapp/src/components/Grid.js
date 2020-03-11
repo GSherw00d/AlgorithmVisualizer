@@ -7,11 +7,7 @@ class Grid extends Component {
   render() {
     const { nodes } = this.props;
     const nodesGrid = nodes.map(node => {
-      return (
-        <div className={style.NodeElement} key={node.id}>
-          <Node id={node.id} />
-        </div>
-      );
+      return <Node key={node.id} id={node.id} />;
     });
 
     return (

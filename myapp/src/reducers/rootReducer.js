@@ -9,12 +9,29 @@ function makeNodeArray(rows, columns) {
 }
 
 const initState = {
-  nodes: makeNodeArray(15, 20)
+  nodes: makeNodeArray(15, 20),
+  isActive: {
+    wall: false,
+    startFinNode: false,
+    algorithm: "Null",
+    start: false
+  }
 };
 
 const rootReducer = (state = initState, action) => {
   console.log(action);
-  return state;
+  if (action.type === "WALL_STATUS_CHANGE") {
+    let newWall = state.isActive.wall ? false : true;
+    return {
+      ...state,
+      isActive: { ...state.isActive, wall: newWall }
+    };
+  } else if (action.type === "TYPE_CHANGE") {
+    console.log(action.id);
+    return state;
+  } else {
+    return state;
+  }
 };
 
 export default rootReducer;
