@@ -1,13 +1,14 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import Node from "./NodePlace.js";
+import style from "./Grid.module.css";
 
 class Grid extends Component {
   render() {
     const { nodes } = this.props;
     const nodesGrid = nodes.map(node => {
       return (
-        <div key={node.id}>
+        <div className={style.NodeElement} key={node.id}>
           <Node id={node.id} />
         </div>
       );
@@ -15,7 +16,7 @@ class Grid extends Component {
 
     return (
       <div>
-        <div className="GridContainer">{nodesGrid}</div>
+        <div className={style.GridContainer}>{nodesGrid}</div>
       </div>
     );
   }
