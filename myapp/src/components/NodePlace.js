@@ -1,19 +1,21 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import style from "./Grid.module.css";
+import "./Grid.css";
 
 class Node extends Component {
   handleClick = () => {
-    console.log("Hello");
+    console.log(this.props.nodes.type);
     this.props.typeChange(this.props.id);
   };
 
   render() {
+    let type = this.props.nodes.type;
     return (
       <div
-        className={style.element} //this.props.nodes.type}
+        className={style.element + " " + type} //this.props.nodes.type}
         onClick={this.handleClick}
-        id={this.props.id}
+        id={style.type}
       ></div>
     );
   }

@@ -27,8 +27,13 @@ const rootReducer = (state = initState, action) => {
       isActive: { ...state.isActive, wall: newWall }
     };
   } else if (action.type === "TYPE_CHANGE") {
-    console.log(action.id);
-    return state;
+    let newNodes = state.nodes.map(node => {
+      if (action.id === node.id) {
+        return { ...node, type: "WALL" };
+      }
+      return node;
+    });
+    return { ...state, nodes: newNodes };
   } else {
     return state;
   }
