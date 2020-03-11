@@ -1,0 +1,17 @@
+.GridContainer {
+  margin: 1vw 20vw;
+  display: inline-grid;
+  grid-template-columns: repeat(20, 3vw);
+  grid-template-rows: repeat(15, 3vw);
+  border-bottom: 1px solid black;
+  border-left: 1px solid black;
+}
+
+.NodeElement {
+  border-top: 1px solid black;
+  border-right: 1px solid black;
+}
+
+.NodeElement:hover {
+  background-color: blue;
+}
