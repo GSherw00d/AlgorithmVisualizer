@@ -4,9 +4,10 @@ import { connect } from "react-redux";
 class Node extends Component {
   render() {
     return (
-      <div className={"element " + this.props.nodes.type}>
-        <p>{this.props.id}</p>
-      </div>
+      <div
+        className={"element " + this.props.nodes.type}
+        id={this.props.id}
+      ></div>
     );
   }
 }
