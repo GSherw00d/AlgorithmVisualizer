@@ -7,8 +7,8 @@ class Grid extends Component {
     const { nodes } = this.props;
     const nodesGrid = nodes.map(node => {
       return (
-        <div>
-          <Node id={this.props.nodes.id} />
+        <div key={node.id}>
+          <Node id={node.id} />
         </div>
       );
     });
