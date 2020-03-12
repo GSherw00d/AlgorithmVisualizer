@@ -15,7 +15,3 @@
 .element:hover {
   background-color: blue;
 }
-
-.element.WALL {
-  background-color: red;
-}

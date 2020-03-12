@@ -2,11 +2,24 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import style from "./Grid.module.css";
 import "./Grid.css";
+import ReactDOM from "react-dom";
 
 class Node extends Component {
-  handleClick = () => {
-    console.log(this.props.nodes.type);
+  handleMouseDown = () => {
     this.props.typeChange(this.props.id);
+  };
+
+  componentDidMount() {
+    ReactDOM.findDOMNode(this).addEventListener(
+      "mouseover",
+      this.mouseDragOver
+    );
+  }
+
+  mouseDragOver = e => {
+    if (e.buttons === 1 || e.buttons === 3) {
+      this.handleMouseDown();
+    }
   };
 
   render() {
@@ -14,7 +27,7 @@ class Node extends Component {
     return (
       <div
         className={style.element + " " + type} //this.props.nodes.type}
-        onClick={this.handleClick}
+        onMouseDown={this.handleMouseDown}
         id={style.type}
       ></div>
     );
