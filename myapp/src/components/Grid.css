@@ -1,6 +1,10 @@
 .WALL {
   background-color: red;
 }
-.SFNODE {
+.SNODE {
   background-color: yellow;
+}
+
+.FNODE {
+  background-color: orange;
 }

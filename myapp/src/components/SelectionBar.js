@@ -7,8 +7,12 @@ class SelectionBar extends Component {
     console.log(this.props.isActive);
   };
 
-  handleClickSFNode = () => {
-    this.props.sfNodeActive();
+  handleClickSNode = () => {
+    this.props.sNodeActive();
+  };
+
+  handleClickFNode = () => {
+    this.props.fNodeActive();
   };
 
   render() {
@@ -17,11 +21,16 @@ class SelectionBar extends Component {
         <button className="Wall" onClick={this.handleClickWall}>
           Wall
         </button>
-        <button className="StartFinNode" onClick={this.handleClickSFNode}>
+        <button className="StartNode" onClick={this.handleClickSNode}>
           {" "}
-          SFNode
+          Start Node
         </button>
-        <button className="Algorithm">Algorithm</button>
+        <button className="FinNode" onClick={this.handleClickFNode}>
+          {" "}
+          Finish Node
+        </button>
+
+        <button>Djikstras</button>
         <button className="Start">Start</button>
       </div>
     );
@@ -41,9 +50,13 @@ const mapDispatchToProps = dispatch => {
       dispatch({
         type: "WALL_STATUS_CHANGE" //Not sure if this is the right way of doing things
       }),
-    sfNodeActive: () =>
+    sNodeActive: () =>
       dispatch({
-        type: "START_FINISH_NODE"
+        type: "START_NODE"
+      }),
+    fNodeActive: () =>
+      dispatch({
+        type: "FINISH_NODE"
       })
   };
 };

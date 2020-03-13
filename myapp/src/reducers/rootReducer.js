@@ -12,7 +12,8 @@ const initState = {
   nodes: makeNodeArray(15, 20),
   isActive: {
     wall: false,
-    startFinNode: false,
+    startNode: false,
+    finishNode: false,
     algorithm: "Null",
     start: false
   }
@@ -25,43 +26,85 @@ const rootReducer = (state = initState, action) => {
       ...state,
       isActive: { ...state.isActive, startFinNode: false, wall: newWall } //want to change the other types of block
     };
-  } else if (action.type === "START_FINISH_NODE") {
-    let newSFNodes = state.isActive.startFinNode ? false : true;
+  } else if (action.type === "START_NODE") {
+    let newSNodes = state.isActive.startNode ? false : true;
     return {
       ...state,
-      isActive: { ...state.isActive, startFinNode: newSFNodes, wall: false }
+      isActive: {
+        ...state.isActive,
+        startNode: newSNodes,
+        finishNode: false,
+        wall: false
+      }
+    };
+  } else if (action.type === "FINISH_NODE") {
+    let newFNodes = state.isActive.finishNode ? false : true;
+    return {
+      ...state,
+      isActive: {
+        ...state.isActive,
+        startNode: false,
+        finishNode: newFNodes,
+        wall: false
+      }
     };
   } else if (action.type === "TYPE_CHANGE") {
-    let noOfSFNodes = state.nodes.filter(node => {
-      return node.type === "SFNODE";
+    let noOfSNodes = state.nodes.filter(node => {
+      return node.type === "SNODE";
     }).length;
+
+    let noOfFNodes = state.nodes.filter(node => {
+      return node.type === "FNODE";
+    }).length;
+
     let newNodes = state.nodes.map(node => {
       if (action.id === node.id && state.isActive.wall === true) {
         return { ...node, type: "WALL" };
       } else if (
         action.id === node.id &&
-        state.isActive.startFinNode === true &&
-        noOfSFNodes < 2
+        state.isActive.startNode === true &&
+        noOfSNodes < 1
       ) {
-        return node.type === "SFNODE"
+        return node.type === "SNODE"
           ? {
               ...node,
               type: "EMPTY"
             }
           : {
               ...node,
-              type: "SFNODE"
+              type: "SNODE"
             };
       } else if (
         action.id === node.id &&
-        state.isActive.startFinNode === true &&
-        node.type === "SFNODE"
+        state.isActive.startNode === true &&
+        node.type === "SNODE"
+      ) {
+        return { ...node, type: "EMPTY" };
+      } else if (
+        action.id === node.id &&
+        state.isActive.finishNode === true &&
+        noOfFNodes < 1
+      ) {
+        return node.type === "FNODE"
+          ? {
+              ...node,
+              type: "EMPTY"
+            }
+          : {
+              ...node,
+              type: "FNODE"
+            };
+      } else if (
+        action.id === node.id &&
+        state.isActive.finishNode === true &&
+        node.type === "FNODE"
       ) {
         return { ...node, type: "EMPTY" };
       }
 
       return node;
     });
+
     return { ...state, nodes: newNodes };
   } else {
     return state;
