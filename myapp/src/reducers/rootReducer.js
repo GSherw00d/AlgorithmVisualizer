@@ -26,6 +26,14 @@ const rootReducer = (state = initState, action) => {
       ...state,
       isActive: { ...state.isActive, startFinNode: false, wall: newWall } //want to change the other types of block
     };
+  } else if (action.type === "DJIKSTRAS") {
+    return {
+      ...state,
+      isActive: {
+        ...state.isActive,
+        algorithm: "djikstras"
+      }
+    };
   } else if (action.type === "START_NODE") {
     let newSNodes = state.isActive.startNode ? false : true;
     return {

@@ -1,7 +1,16 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { algorithm } from "./Algorithms.js";
 
 class SelectionBar extends Component {
+  state = {
+    triedNodesInOrder: algorithm(
+      this.props.isActive.algorithm,
+      this.props.nodes
+    ),
+    shortestPath: algorithm(this.props.isActive, this.props.nodes)
+  };
+
   handleClickWall = () => {
     this.props.wallActive();
     console.log(this.props.isActive);
@@ -15,6 +24,13 @@ class SelectionBar extends Component {
     this.props.fNodeActive();
   };
 
+  handleClickAlgorithm = () => {
+    this.props.algorithmSelection();
+  };
+
+  handleClickStart = () => {
+    console.log(this.state.triedNodesInOrder);
+  };
   render() {
     return (
       <div>
@@ -30,8 +46,12 @@ class SelectionBar extends Component {
           Finish Node
         </button>
 
-        <button>Djikstras</button>
-        <button className="Start">Start</button>
+        <button className="Algorithm" onClick={this.handleClickAlgorithm}>
+          Djikstras
+        </button>
+        <button className="Start" onClick={this.handleClickStart}>
+          Start
+        </button>
       </div>
     );
   }
@@ -39,7 +59,8 @@ class SelectionBar extends Component {
 
 const mapStatetoProps = state => {
   return {
-    isActive: state.isActive
+    isActive: state.isActive,
+    nodes: state.nodes
   };
 };
 
@@ -57,6 +78,15 @@ const mapDispatchToProps = dispatch => {
     fNodeActive: () =>
       dispatch({
         type: "FINISH_NODE"
+      }),
+    algorithmSelection: () =>
+      dispatch({
+        type: "DJIKSTRAS"
+      }),
+    typeChangeNodePath: id =>
+      dispatch({
+        type: "TYPE_CHANGE_SHORTEST_PATH",
+        id
       })
   };
 };
