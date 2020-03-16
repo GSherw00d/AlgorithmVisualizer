@@ -1,19 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { algorithm } from "./Algorithms.js";
 
 class SelectionBar extends Component {
-  state = {
-    triedNodesInOrder: algorithm(
-      this.props.isActive.algorithm,
-      this.props.nodes
-    ),
-    shortestPath: algorithm(this.props.isActive, this.props.nodes)
-  };
-
   handleClickWall = () => {
     this.props.wallActive();
-    console.log(this.props.isActive);
   };
 
   handleClickSNode = () => {
@@ -29,8 +19,27 @@ class SelectionBar extends Component {
   };
 
   handleClickStart = () => {
-    console.log(this.state.triedNodesInOrder);
+    this.props.start();
   };
+
+  visitingTheNodesPause = i => {
+    setTimeout(() => {
+      this.props.visitedNode(this.props.visited[i]);
+    }, 500 * i);
+  };
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.visited !== this.props.visited) {
+      for (let node in this.props.nodes) {
+        for (let i = 0; i < this.props.visited.length; i++) {
+          if (this.props.visited[i] === this.props.nodes[node].id) {
+            this.visitingTheNodesPause(i);
+          }
+        }
+      }
+    }
+  }
+
   render() {
     return (
       <div>
@@ -60,7 +69,8 @@ class SelectionBar extends Component {
 const mapStatetoProps = state => {
   return {
     isActive: state.isActive,
-    nodes: state.nodes
+    nodes: state.nodes,
+    visited: state.visited
   };
 };
 
@@ -83,10 +93,15 @@ const mapDispatchToProps = dispatch => {
       dispatch({
         type: "DJIKSTRAS"
       }),
-    typeChangeNodePath: id =>
+    visitedNode: id =>
       dispatch({
-        type: "TYPE_CHANGE_SHORTEST_PATH",
+        type: "VISITED",
         id
+      }),
+
+    start: () =>
+      dispatch({
+        type: "START"
       })
   };
 };

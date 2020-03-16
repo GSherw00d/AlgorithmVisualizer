@@ -1,3 +1,5 @@
+import { algorithm } from "../components/Algorithms.js";
+
 function makeNodeArray(rows, columns) {
   let initNode = [];
   for (let i = 0; i < rows; i++) {
@@ -10,12 +12,13 @@ function makeNodeArray(rows, columns) {
 
 const initState = {
   nodes: makeNodeArray(15, 20),
+  visited: [],
+  shortestPath: [],
   isActive: {
     wall: false,
     startNode: false,
     finishNode: false,
-    algorithm: "Null",
-    start: false
+    algorithm: "Null"
   }
 };
 
@@ -114,6 +117,16 @@ const rootReducer = (state = initState, action) => {
     });
 
     return { ...state, nodes: newNodes };
+  } else if (action.type === "VISITED") {
+    let visitedNodes = state.nodes.map(node => {
+      return action.id === node.id ? { ...node, type: "VISITED" } : { ...node };
+    });
+    return { ...state, nodes: visitedNodes };
+  } else if (action.type === "START") {
+    return {
+      ...state,
+      visited: algorithm(state.isActive.algorithm, state.nodes)
+    };
   } else {
     return state;
   }
