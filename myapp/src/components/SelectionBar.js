@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import "./selectionbar.css";
 
 class SelectionBar extends Component {
   handleClickWall = () => {
@@ -22,18 +23,15 @@ class SelectionBar extends Component {
     this.props.start();
   };
 
-  visitingTheNodesPause = i => {
-    setTimeout(() => {
-      this.props.visitedNode(this.props.visited[i]);
-    }, 500 * i);
-  };
-
   componentDidUpdate(prevProps) {
     if (prevProps.visited !== this.props.visited) {
       for (let node in this.props.nodes) {
         for (let i = 0; i < this.props.visited.length; i++) {
           if (this.props.visited[i] === this.props.nodes[node].id) {
-            this.visitingTheNodesPause(i);
+            //this.visitingTheNodesPause(i);
+            setTimeout(() => {
+              this.props.visitedNode(this.props.visited[i]);
+            }, 100 * i);
           }
         }
       }
@@ -43,14 +41,23 @@ class SelectionBar extends Component {
   render() {
     return (
       <div>
-        <button className="Wall" onClick={this.handleClickWall}>
+        <button
+          className={this.props.isActive.wall}
+          onClick={this.handleClickWall}
+        >
           Wall
         </button>
-        <button className="StartNode" onClick={this.handleClickSNode}>
+        <button
+          className={this.props.isActive.startNode}
+          onClick={this.handleClickSNode}
+        >
           {" "}
           Start Node
         </button>
-        <button className="FinNode" onClick={this.handleClickFNode}>
+        <button
+          className={this.props.isActive.finishNode}
+          onClick={this.handleClickFNode}
+        >
           {" "}
           Finish Node
         </button>

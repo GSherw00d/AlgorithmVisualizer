@@ -15,19 +15,24 @@ const initState = {
   visited: [],
   shortestPath: [],
   isActive: {
-    wall: false,
-    startNode: false,
-    finishNode: false,
+    wall: "false",
+    startNode: "false",
+    finishNode: "false",
     algorithm: "Null"
   }
 };
 
 const rootReducer = (state = initState, action) => {
   if (action.type === "WALL_STATUS_CHANGE") {
-    let newWall = state.isActive.wall ? false : true;
+    let newWall = state.isActive.wall === "true" ? "false" : "true";
     return {
       ...state,
-      isActive: { ...state.isActive, startFinNode: false, wall: newWall } //want to change the other types of block
+      isActive: {
+        ...state.isActive,
+        startNode: "false",
+        finishNode: "false",
+        wall: newWall
+      } //want to change the other types of block
     };
   } else if (action.type === "DJIKSTRAS") {
     return {
@@ -38,25 +43,25 @@ const rootReducer = (state = initState, action) => {
       }
     };
   } else if (action.type === "START_NODE") {
-    let newSNodes = state.isActive.startNode ? false : true;
+    let newSNodes = state.isActive.startNode === "true" ? "false" : "true";
     return {
       ...state,
       isActive: {
         ...state.isActive,
         startNode: newSNodes,
-        finishNode: false,
-        wall: false
+        finishNode: "false",
+        wall: "false"
       }
     };
   } else if (action.type === "FINISH_NODE") {
-    let newFNodes = state.isActive.finishNode ? false : true;
+    let newFNodes = state.isActive.finishNode === "true" ? "false" : "true";
     return {
       ...state,
       isActive: {
         ...state.isActive,
-        startNode: false,
+        startNode: "false",
         finishNode: newFNodes,
-        wall: false
+        wall: "false"
       }
     };
   } else if (action.type === "TYPE_CHANGE") {
@@ -69,11 +74,14 @@ const rootReducer = (state = initState, action) => {
     }).length;
 
     let newNodes = state.nodes.map(node => {
-      if (action.id === node.id && state.isActive.wall === true) {
-        return { ...node, type: "WALL" };
+      if (action.id === node.id && state.isActive.wall === "true") {
+        return {
+          ...node,
+          type: "WALL"
+        };
       } else if (
         action.id === node.id &&
-        state.isActive.startNode === true &&
+        state.isActive.startNode === "true" &&
         noOfSNodes < 1
       ) {
         return node.type === "SNODE"
@@ -87,13 +95,13 @@ const rootReducer = (state = initState, action) => {
             };
       } else if (
         action.id === node.id &&
-        state.isActive.startNode === true &&
+        state.isActive.startNode === "true" &&
         node.type === "SNODE"
       ) {
         return { ...node, type: "EMPTY" };
       } else if (
         action.id === node.id &&
-        state.isActive.finishNode === true &&
+        state.isActive.finishNode === "true" &&
         noOfFNodes < 1
       ) {
         return node.type === "FNODE"
@@ -107,7 +115,7 @@ const rootReducer = (state = initState, action) => {
             };
       } else if (
         action.id === node.id &&
-        state.isActive.finishNode === true &&
+        state.isActive.finishNode === "true" &&
         node.type === "FNODE"
       ) {
         return { ...node, type: "EMPTY" };
