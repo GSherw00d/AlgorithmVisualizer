@@ -2,10 +2,10 @@
 //return the shortest path in order
 export function algorithm(algorithmThatisActive, currentNodes) {
   const minTotalCosts = {}; // map of node and int {id : "distance"}
-  const prevNodes = {}; // map of node and node {id: "id"}
+  const prevNodes = {}; // map of node and node {CURRENT id", PREVID: "id"}
   let minPQ = []; // list of objects node and in [{id: x, distance: x}]
   const visited = []; //array of nodes
-
+  //Lessons learned MAKE TYPES EASY YOU BLOODY IDIOT
   let removeSmallest = minPQ => {
     let smallestDistance = Infinity;
     let index = -1;
@@ -84,24 +84,28 @@ export function algorithm(algorithmThatisActive, currentNodes) {
     //Main loop
     let newSmallest = removeSmallest(minPQ);
     let neighbours = nodesNeighbours(newSmallest, nodesGoingIntoDijkstras); // find neighbours of this node
-
+    //minPQ = minPQ.concat(neighbours);
+    //console.log(minPQ.concat(neighbours));
     for (let i = 0; i < neighbours.length; i++) {
       //check neighbours
       if (!containsNeighbour(visited, neighbours[i])) {
         //check if the neighbour has been visited
         let altPath = minTotalCosts[newSmallest.id] + 1; //make a path, check distance
-        console.log(altPath);
-        if (altPath < minTotalCosts[neighbours[i]]) {
-          // Check if new path better
-          minTotalCosts[neighbours[i]] = altPath; //Update path length for neighbour
-          prevNodes[neighbours[i]] = newSmallest.id; //Update previous node to node we just removed
 
-          for (let j = 0; j < minPQ.length; i++) {
-            //Update priority in minPQ
-            if (minPQ[j].id === neighbours[0]) {
-              minPQ[j] = { id: neighbours[0], distance: altPath };
-            }
-          }
+        if (altPath < minTotalCosts[neighbours[i].id]) {
+          console.log("Hello");
+          // Check if new path betteR
+          minTotalCosts[neighbours[i].id] = altPath; //Update path length for neighbour
+          prevNodes[neighbours[i].id] = newSmallest.id; //Update previous node to node we just removed
+
+          minPQ.push({ id: neighbours[i].id, distance: altPath });
+
+          //for (let j = 0; j < minPQ.length; j++) {
+          //Update priority in minPQ
+          //if (minPQ[j].id === neighbours[i].id) {
+          //  minPQ[j] = { id: neighbours[i].id, distance: altPath };
+          //}
+          // }
         }
       }
     }
