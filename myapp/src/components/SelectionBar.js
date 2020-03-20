@@ -59,13 +59,14 @@ class SelectionBar extends Component {
 
   render() {
     return (
-      <div className={styles.Container}>
+      <div className={styles.container}>
         <button
           className={this.props.isActive.wall}
           onClick={this.handleClickWall}
         >
           Wall
         </button>
+
         <button
           className={this.props.isActive.startNode}
           onClick={this.handleClickSNode}
@@ -73,6 +74,7 @@ class SelectionBar extends Component {
           {" "}
           Start Node
         </button>
+
         <button
           className={this.props.isActive.finishNode}
           onClick={this.handleClickFNode}

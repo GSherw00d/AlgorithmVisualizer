@@ -1,3 +1,6 @@
+.EMPTY {
+  background-color: black;
+}
 .WALL {
   background-color: red;
 }
@@ -9,9 +12,30 @@
   background-color: orange;
 }
 .VISITED {
-  background-color: blue;
+  animation-fill-mode: forwards;
+  animation-name: visited;
+  animation-duration: 1s;
+}
+
+@keyframes visited {
+  from {
+  }
+  to {
+    background-color: blue;
+  }
 }
 
 .SHORTEST {
-  background-color: green;
+  animation-fill-mode: forwards;
+  animation-name: shortest;
+  animation-duration: 1s;
+}
+
+@keyframes shortest {
+  from {
+    background-color: blue;
+  }
+  to {
+    background-color: green;
+  }
 }

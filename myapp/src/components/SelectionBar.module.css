@@ -1,5 +1,18 @@
-.Container {
-  margin: 1vw 20vw;
+.container {
+  margin-top: 1vw;
+  margin-left: 20vw;
   display: inline-grid;
-  grid-template-columns: repeat(5, 3vw);
+  grid-template-columns: repeat(5, 12vw);
+}
+
+button {
+  height: 3vw;
+  background-color: rgb(5, 0, 68);
+  margin: 0.2vw;
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
+}
+button:hover {
+  background-color: purple;
 }
