@@ -82,10 +82,12 @@ class SelectionBar extends Component {
           {" "}
           Finish Node
         </button>
-
-        <button className="Algorithm" onClick={this.handleClickAlgorithm}>
-          Djikstras
-        </button>
+        <select id="Algorithms">
+          <option>Algorthim</option>
+          <option className="Algorithm" onClick={this.handleClickAlgorithm}>
+            Djikstras
+          </option>
+        </select>
         <button className="Start" onClick={this.handleClickStart}>
           Start
         </button>

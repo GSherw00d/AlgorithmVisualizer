@@ -5,14 +5,18 @@
   grid-template-columns: repeat(5, 12vw);
 }
 
-button {
+button,
+select {
   height: 3vw;
   background-color: rgb(5, 0, 68);
   margin: 0.2vw;
   border-radius: 5px;
   color: white;
   font-weight: bold;
+  border: 2px solid white;
 }
-button:hover {
+
+button:hover,
+select:hover {
   background-color: purple;
 }
