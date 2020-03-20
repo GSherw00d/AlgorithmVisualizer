@@ -54,6 +54,16 @@ export function algorithm(algorithmThatisActive, currentNodes) {
     return false;
   };
 
+  let findShortestPath = (prevNodes, startNodeId, finishNodeId) => {
+    let ar = [];
+    let id = finishNodeId;
+    while (id !== startNodeId) {
+      ar.push(id);
+      id = prevNodes[id];
+    }
+    return ar;
+  };
+
   //find start node
   const startNodeId = currentNodes
     .find(node => {
@@ -79,13 +89,17 @@ export function algorithm(algorithmThatisActive, currentNodes) {
       minTotalCosts[nodesGoingIntoDijkstras[i].id] = Infinity; //set the distance to infinity at first, since any path we find will be shorter
     }
   }
-
-  while (minPQ.length !== 0) {
+  let reachedFinNode = false;
+  while (minPQ.length !== 0 || reachedFinNode === false) {
     //Main loop
     let newSmallest = removeSmallest(minPQ);
+    visited.push(newSmallest.id);
+    if (newSmallest.id === finishNodeId) {
+      reachedFinNode = false;
+      break;
+    }
     let neighbours = nodesNeighbours(newSmallest, nodesGoingIntoDijkstras); // find neighbours of this node
-    //minPQ = minPQ.concat(neighbours);
-    //console.log(minPQ.concat(neighbours));
+    minPQ.concat(neighbours);
     for (let i = 0; i < neighbours.length; i++) {
       //check neighbours
       if (!containsNeighbour(visited, neighbours[i])) {
@@ -93,31 +107,22 @@ export function algorithm(algorithmThatisActive, currentNodes) {
         let altPath = minTotalCosts[newSmallest.id] + 1; //make a path, check distance
 
         if (altPath < minTotalCosts[neighbours[i].id]) {
-          console.log("Hello");
-          // Check if new path betteR
+          // Check if new path better
           minTotalCosts[neighbours[i].id] = altPath; //Update path length for neighbour
           prevNodes[neighbours[i].id] = newSmallest.id; //Update previous node to node we just removed
 
           minPQ.push({ id: neighbours[i].id, distance: altPath });
-
-          //for (let j = 0; j < minPQ.length; j++) {
-          //Update priority in minPQ
-          //if (minPQ[j].id === neighbours[i].id) {
-          //  minPQ[j] = { id: neighbours[i].id, distance: altPath };
-          //}
-          // }
         }
       }
     }
   }
 
-  console.log(minTotalCosts);
-  // then we would return the total cost and the previous node.
-  //However what about the list of visited nodes, i reckon we just return that straight as is. Bet as each node is the same cost we can return the visited
-  //nodes list up to the finish node.
+  let shortestPath = findShortestPath(prevNodes, startNodeId, finishNodeId); // should return list of ID's in order
+  console.log(shortestPath);
+  console.log(visited);
+  visited.shift();
+  visited.pop();
+  shortestPath.shift();
 
-  return ["1_1"];
-  //now all I need to do is to learn djistras algorithm
-  //need to check for a start and a finish.
-  //Lets assume they are there for the time being
+  return [visited, shortestPath];
 }

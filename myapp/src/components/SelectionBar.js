@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import "./selectionbar.css";
+import styles from "./SelectionBar.module.css";
 
 class SelectionBar extends Component {
   handleClickWall = () => {
@@ -22,25 +23,43 @@ class SelectionBar extends Component {
   handleClickStart = () => {
     this.props.start();
   };
+  // could make this into a callback
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.visited !== this.props.visited) {
+  componentDidUpdate(prevProps, prevState) {
+    let a = this.props.visited.length;
+    if (
+      prevProps.visited !== this.props.visited &&
+      prevProps.shortestPath !== this.props.ShortestPath
+    ) {
       for (let node in this.props.nodes) {
         for (let i = 0; i < this.props.visited.length; i++) {
           if (this.props.visited[i] === this.props.nodes[node].id) {
             //this.visitingTheNodesPause(i);
             setTimeout(() => {
               this.props.visitedNode(this.props.visited[i]);
-            }, 100 * i);
+            }, 50 * i);
+          }
+        }
+      }
+
+      for (let node in this.props.nodes) {
+        for (let j = 0; j < this.props.shortestPath.length; j++) {
+          if (this.props.shortestPath[j] === this.props.nodes[node].id) {
+            //this.visitingTheNodesPause(i);
+            setTimeout(() => {
+              this.props.shortestPathNode(this.props.shortestPath[j]);
+            }, 50 * (j + 1 + a));
           }
         }
       }
     }
   }
 
+  // }
+
   render() {
     return (
-      <div>
+      <div className={styles.Container}>
         <button
           className={this.props.isActive.wall}
           onClick={this.handleClickWall}
@@ -77,7 +96,8 @@ const mapStatetoProps = state => {
   return {
     isActive: state.isActive,
     nodes: state.nodes,
-    visited: state.visited
+    visited: state.visited,
+    shortestPath: state.shortestPath
   };
 };
 
@@ -103,6 +123,11 @@ const mapDispatchToProps = dispatch => {
     visitedNode: id =>
       dispatch({
         type: "VISITED",
+        id
+      }),
+    shortestPathNode: id =>
+      dispatch({
+        type: "SHORTEST",
         id
       }),
 

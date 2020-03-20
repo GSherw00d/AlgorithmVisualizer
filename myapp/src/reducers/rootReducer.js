@@ -130,10 +130,19 @@ const rootReducer = (state = initState, action) => {
       return action.id === node.id ? { ...node, type: "VISITED" } : { ...node };
     });
     return { ...state, nodes: visitedNodes };
+  } else if (action.type === "SHORTEST") {
+    let shortestPathNodes = state.nodes.map(node => {
+      return action.id === node.id
+        ? { ...node, type: "SHORTEST" }
+        : { ...node };
+    });
+    return { ...state, nodes: shortestPathNodes };
   } else if (action.type === "START") {
+    let [a, b] = algorithm(state.isActive.algorithm, state.nodes);
     return {
       ...state,
-      visited: algorithm(state.isActive.algorithm, state.nodes)
+      visited: a,
+      shortestPath: b
     };
   } else {
     return state;
