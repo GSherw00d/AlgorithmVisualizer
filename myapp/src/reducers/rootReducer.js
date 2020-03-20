@@ -144,6 +144,14 @@ const rootReducer = (state = initState, action) => {
       visited: a,
       shortestPath: b
     };
+  } else if (action.type === "RESET") {
+    let resetNodes = state.nodes.map(node => {
+      return { ...node, type: "EMPTY" };
+    });
+    return {
+      ...state,
+      nodes: resetNodes
+    };
   } else {
     return state;
   }

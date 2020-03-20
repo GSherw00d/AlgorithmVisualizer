@@ -23,6 +23,10 @@ class SelectionBar extends Component {
   handleClickStart = () => {
     this.props.start();
   };
+
+  handleReset = () => {
+    this.props.reset();
+  };
   // could make this into a callback
 
   componentDidUpdate(prevProps, prevState) {
@@ -37,7 +41,7 @@ class SelectionBar extends Component {
             //this.visitingTheNodesPause(i);
             setTimeout(() => {
               this.props.visitedNode(this.props.visited[i]);
-            }, 50 * i);
+            }, 30 * i);
           }
         }
       }
@@ -48,14 +52,12 @@ class SelectionBar extends Component {
             //this.visitingTheNodesPause(i);
             setTimeout(() => {
               this.props.shortestPathNode(this.props.shortestPath[j]);
-            }, 50 * (j + 1 + a));
+            }, 30 * (j + 1 + a));
           }
         }
       }
     }
   }
-
-  // }
 
   render() {
     return (
@@ -90,6 +92,9 @@ class SelectionBar extends Component {
         </select>
         <button className="Start" onClick={this.handleClickStart}>
           Start
+        </button>
+        <button className="Reset" onClick={this.handleReset}>
+          Reset
         </button>
       </div>
     );
@@ -138,6 +143,11 @@ const mapDispatchToProps = dispatch => {
     start: () =>
       dispatch({
         type: "START"
+      }),
+
+    reset: () =>
+      dispatch({
+        type: "RESET"
       })
   };
 };
