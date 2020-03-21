@@ -4,13 +4,13 @@ import styles from "./errormessage.module.css";
 
 class ErrorMessage extends Component {
   render() {
-    return <div className={styles.container}> *Error message will go here</div>;
+    return <div className={styles.container}> {this.props.errorMessage}</div>;
   }
 }
 
 const mapStatetoProps = state => {
   return {
-    nodes: state.nodes
+    errorMessage: state.errorMessage
   };
 };
 

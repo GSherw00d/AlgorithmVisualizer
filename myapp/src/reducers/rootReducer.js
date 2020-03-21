@@ -1,4 +1,7 @@
-import { algorithm } from "../components/Algorithms.js";
+import { dijkstras } from "../components/Dijkstras.js";
+
+//Have to make this more readable, have split stuff into functions,
+//learn how to combine reducers to make the root reducer more managable
 
 function makeNodeArray(rows, columns) {
   let initNode = [];
@@ -14,6 +17,7 @@ const initState = {
   nodes: makeNodeArray(15, 20),
   visited: [],
   shortestPath: [],
+  errorMessage: "",
   isActive: {
     wall: "false",
     startNode: "false",
@@ -21,6 +25,47 @@ const initState = {
     algorithm: "Null"
   }
 };
+
+function algorithmChoice(state) {
+  let allNodeTypes = state.nodes.map(node => {
+    if (node.type === "SNODE") {
+      return "SNODE";
+    } else if (node.type === "FNODE") {
+      return "FNODE";
+    } else {
+      return 0;
+    }
+  });
+  //Checking all the nodes are present.
+  if (allNodeTypes.indexOf("SNODE") === -1) {
+    return {
+      ...state,
+      errorMessage: "*Please place a starting node"
+    };
+  } else if (allNodeTypes.indexOf("FNODE") === -1) {
+    return {
+      ...state,
+      errorMessage: "*Please place a finish node"
+    };
+  } else if (state.isActive.algorithm === "Null") {
+    console.log(state.isActive.algorithm);
+    return {
+      ...state,
+      errorMessage: "*Please choose an algorithm"
+    };
+  } else {
+    let [a, b] = dijkstras(state.isActive.algorithm, state.nodes);
+    if (a === "Error") {
+      return { ...state, errorMessage: "There is no valid path" };
+    }
+    return {
+      ...state,
+      visited: a,
+      shortestPath: b,
+      errorMessage: ""
+    };
+  }
+}
 
 const rootReducer = (state = initState, action) => {
   if (action.type === "WALL_STATUS_CHANGE") {
@@ -34,12 +79,12 @@ const rootReducer = (state = initState, action) => {
         wall: newWall
       } //want to change the other types of block
     };
-  } else if (action.type === "DJIKSTRAS") {
+  } else if (action.type === "DIJKSTRAS") {
     return {
       ...state,
       isActive: {
         ...state.isActive,
-        algorithm: "djikstras"
+        algorithm: "dijkstras"
       }
     };
   } else if (action.type === "START_NODE") {
@@ -138,18 +183,19 @@ const rootReducer = (state = initState, action) => {
     });
     return { ...state, nodes: shortestPathNodes };
   } else if (action.type === "START") {
-    let [a, b] = algorithm(state.isActive.algorithm, state.nodes);
-    return {
-      ...state,
-      visited: a,
-      shortestPath: b
-    };
+    return algorithmChoice(state);
   } else if (action.type === "RESET") {
     let resetNodes = state.nodes.map(node => {
       return { ...node, type: "EMPTY" };
     });
     return {
       ...state,
+      errors: {
+        startNode: false,
+        finishNode: false,
+        algorthim: false,
+        message: ""
+      },
       nodes: resetNodes
     };
   } else {

@@ -1,8 +1,8 @@
 .GridContainer {
   margin: 0vw 20vw;
   display: inline-grid;
-  grid-template-columns: repeat(20, 3vw);
-  grid-template-rows: repeat(15, 3vw);
+  grid-template-columns: repeat(20, 2.5vw);
+  grid-template-rows: repeat(15, 2.5vw);
   border-bottom: 1px solid white;
   border-left: 1px solid white;
 }

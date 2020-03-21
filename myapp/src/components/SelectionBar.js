@@ -16,8 +16,12 @@ class SelectionBar extends Component {
     this.props.fNodeActive();
   };
 
-  handleClickAlgorithm = () => {
-    this.props.algorithmSelection();
+  handleChangeAlgorithm = event => {
+    console.log("BEEP");
+
+    if (event.target.value === "dijkstras") {
+      this.props.algorithmSelection();
+    }
   };
 
   handleClickStart = () => {
@@ -84,11 +88,9 @@ class SelectionBar extends Component {
           {" "}
           Finish Node
         </button>
-        <select id="Algorithms">
+        <select id="Algorithms" onChange={this.handleChangeAlgorithm}>
           <option>Algorthim</option>
-          <option className="Algorithm" onClick={this.handleClickAlgorithm}>
-            Djikstras
-          </option>
+          <option value="dijkstras">Djikstras</option>
         </select>
         <button className="Start" onClick={this.handleClickStart}>
           Start
@@ -127,7 +129,7 @@ const mapDispatchToProps = dispatch => {
       }),
     algorithmSelection: () =>
       dispatch({
-        type: "DJIKSTRAS"
+        type: "DIJKSTRAS"
       }),
     visitedNode: id =>
       dispatch({

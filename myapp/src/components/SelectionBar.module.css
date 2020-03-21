@@ -2,7 +2,7 @@
   margin-top: 1vw;
   margin-left: 20vw;
   display: inline-grid;
-  grid-template-columns: repeat(6, 10vw);
+  grid-template-columns: repeat(6, 8.33333vw);
 }
 
 button,
